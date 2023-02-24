@@ -1,0 +1,85 @@
+import os
+
+import streamlit as st
+import openai
+import pandas as pd
+
+st.title("Chatting with ChatGPT")
+st.sidebar.header("Instructions")
+st.sidebar.info(
+    '''This is a web application that allows you to interact with 
+       the OpenAI API's implementation of the ChatGPT model.
+       Enter a **query** in the **text box** and **press enter** to receive 
+       a **response** from the ChatGPT
+       '''
+)
+
+# Set the model engine and your OpenAI API key
+model_engine = "text-davinci-003"
+openai.api_key = st.secrets["Openai_SECRET_KEY"]
+
+
+# os.environ["Openai_SECRET_KEY"] ==  st.secrets["Openai_SECRET_KEY"]
+
+
+def ChatGPT(user_query):
+    '''
+    This function uses the OpenAI API to generate a response to the given
+    user_query using the ChatGPT model
+    :param user_query:
+    :return:
+    '''
+    # Use the OpenAI API to generate a response
+    completion = openai.Completion.create(
+        engine=model_engine,
+        prompt=user_query,
+        max_tokens=1024,
+        n=1,
+        temperature=0.5,
+    )
+    response = completion.choices[0].text
+    return response
+
+
+## Read a list of adjectives and actions
+adjs = pd.read_csv('./prefix_data/adjectives.csv')
+actions = pd.read_csv('./prefix_data/actions.csv')
+
+adj_response_type = st.sidebar.multiselect("Please specify keywords", adjs)
+response_type = st.sidebar.selectbox("Please specify action", actions)
+def create_action(adj_response_type, response_type):
+    # for adjective in adj_response_type:
+    #     prefix_adj = adjective.join(adjective).split(',')
+    strList = [str(i) for i in adj_response_type]
+    myString = ", ".join(strList)
+    prefix_keyword = myString + " and " + str(response_type)
+    st.sidebar.warning(prefix_keyword)
+    return prefix_keyword
+
+
+def main():
+    '''
+    This function gets the user input, pass it to ChatGPT function and
+    displays the response
+    '''
+    # Get user input
+    user_query = st.text_input("Enter query here, to exit enter :q", "what is Python?")
+    if user_query != ":q" or user_query != "":
+        # Pass the query to the ChatGPT function
+        if adj_response_type != "" and response_type != "":
+            prefix_keyword = create_action(adj_response_type, response_type)
+            prefix_query = f'A {prefix_keyword} response to {user_query}'
+            response = ChatGPT(prefix_query)
+            return st.write(f"{prefix_query} {response}")
+        else:
+            response = ChatGPT(user_query)
+            return st.write(f"{user_query} {response}")
+
+
+if __name__ == '__main__':
+    main()
+
+
+# ## To do
+# hide secret keys
+# add buttons
