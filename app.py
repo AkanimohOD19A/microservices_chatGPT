@@ -1,19 +1,19 @@
 import streamlit as st
 import openai
 import pandas as pd
-from datetime import date
-from streamlit import caching
+# from datetime import date
+# from streamlit import caching
 # import hydralit_components as hc
 
 # st.set_page_config(layout='wide',initial_sidebar_state='collapsed',)
 
-## Handling Cache
-def cache_clear_dt(dummy):
-    clear_dt = date.today()
-    return clear_dt
-
-if cache_clear_dt("dummy")<date.today():
-    caching.clear_cache()
+# ## Handling Cache to refresh after s day
+# def cache_clear_dt(dummy):
+#     clear_dt = date.today()
+#     return clear_dt
+#
+# if cache_clear_dt("dummy")<date.today():
+#     caching.clear_cache()
 
 def create_action(adj_response_type, response_type):
     # for adjective in adj_response_type:
@@ -42,7 +42,7 @@ def ChatGPT(user_query):
     response = completion.choices[0].text
     return response
 
-@st.cache
+@st.cache_data
 def api_call_on(query):
     '''
     This function gets the user input, pass it to ChatGPT function and
