@@ -160,7 +160,4 @@ if st.sidebar.button("Edit Keywords"):
     editable_df['ACTIONS'].to_csv('./prefix_data/actions.csv', index=False)
     editable_df['ADJECTIVES'].to_csv('./prefix_data/adjectives.csv', index=False)
 
-# ## To do
-# Collapse option to use keywords
-# Add cache
-# Add loader
+st.sidebar.info("Made with ❤ by the AfroLogicInsect")
