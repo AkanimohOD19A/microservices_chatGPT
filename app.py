@@ -74,17 +74,22 @@ def api_call_on(query):
 model_engine = "text-davinci-003"
 openai.api_key = st.secrets["Openai_SECRET_KEY"]
 
-st.title("Run a Query with ChatGPT")
+st.title("Auto-Query Customer engagements with ChatGPT")
+st.markdown("##### This is a web application that allows you to interact with "
+            "the OpenAI API's implementation of the ChatGPT model.")
+
+st.markdown('##')  ##-> Empty Space Divider
+
 st.sidebar.header("Instructions")
 st.sidebar.info(
-    '''This is a web application that allows you to interact with 
-       the OpenAI API's implementation of the ChatGPT model.
+    '''
        Enter a **query** in the **text box** and **press enter** to receive 
        a **response** from the ChatGPT
-       '''
+    '''
 )
 # Get user input
-user_query = st.text_input("Enter query here, to exit enter :q", "what is Python?")
+user_query = st.text_input("Enter query here, to exit enter :q",
+                           "what is Customer Lifeclycle?")
 
 # os.environ["Openai_SECRET_KEY"] ==  st.secrets["Openai_SECRET_KEY"]
 option = st.sidebar.selectbox("How would you like to run your query?", ("Use Keywords",
